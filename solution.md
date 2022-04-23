@@ -354,7 +354,7 @@ onTap: () async {
 25. Create a request of type post to your endpoint and pass it the `data` variable we created:
 
 ```
-Post, http://http://10.0.2.2:5000/pets
+Post, https://coded-pets-api-crud.herokuapp.com/pets
 ```
 
 ```dart
@@ -394,22 +394,22 @@ return retrievedPet;
   void createPet(Pet pet) async {}
 ```
 
-29. Inside it, call `DioClient().createPet()` and pass to it the argument.
+29. Inside it, call `PetsServices().createPet()` and pass to it the argument.
 
 ```dart
-    await DioClient().createPet(pet: pet);
+    await PetsServices().createPet(pet: pet);
 ```
 
 30. Store the result in a variable called `newPet`.
 
 ```dart
-    Pet newPet = await DioClient().createPet(pet: pet);
+    Pet newPet = await PetsServices().createPet(pet: pet);
 ```
 
 31. Insert this `newPet` in your `List` of pets in the provider.
 
 ```dart
-    Pet newPet = await DioClient().createPet(pet: pet);
+    Pet newPet = await PetsServices().createPet(pet: pet);
     pets.insert(0, newPet);
 ```
 
@@ -607,11 +607,11 @@ class UpdateFormState extends State<UpdatePetForm> {
   }
 ```
 
-8. In your provider, create a function `updatePet` that takes a `Pet` argument and call the `DioClient().updatePet(pet: pet)`
+8. In your provider, create a function `updatePet` that takes a `Pet` argument and call the `PetsServices().updatePet(pet: pet)`
 
 ```dart
   void updatePet(Pet pet) async {
-    Pet newPet = await DioClient().updatePet(pet: pet);
+    Pet newPet = await PetsServices().updatePet(pet: pet);
   }
 ```
 
@@ -619,7 +619,7 @@ class UpdateFormState extends State<UpdatePetForm> {
 
 ```dart
   void updatePet(Pet pet) async {
-    Pet newPet = await DioClient().updatePet(pet: pet);
+    Pet newPet = await PetsServices().updatePet(pet: pet);
     int index = pets.indexWhere((pet) => pet.id == newPet.id);
     pets[index] = newPet;
     notifyListeners();
