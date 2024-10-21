@@ -1,5 +1,6 @@
-import 'package:adopt_app/services/pets.dart';
 import 'package:adopt_app/models/pet.dart';
+import 'package:adopt_app/services/pets.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class PetsProvider extends ChangeNotifier {
@@ -9,10 +10,14 @@ class PetsProvider extends ChangeNotifier {
     pets = await DioClient().getPets();
   }
 
-  void createPet(Pet pet) async {
-    Pet newPet = await DioClient().createPet(pet: pet);
-    pets.insert(0, newPet);
-    notifyListeners();
+  void createPet(Pet toAdded) async {
+    try {
+      var pet = await DioClient().createPet(pet: toAdded);
+      pets.insert(0, pet);
+      notifyListeners();
+    } on DioException catch (e) {
+      print(e.error);
+    }
   }
 
   void updatePet(Pet pet) async {

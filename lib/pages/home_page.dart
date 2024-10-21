@@ -20,7 +20,9 @@ class HomePage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.push("/add_page");
+                },
                 child: const Padding(
                   padding: EdgeInsets.all(12.0),
                   child: Text("Add a new Pet"),

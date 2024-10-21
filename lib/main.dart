@@ -1,3 +1,4 @@
+import 'package:adopt_app/pages/add_page.dart';
 import 'package:adopt_app/pages/home_page.dart';
 import 'package:adopt_app/providers/pets_provider.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +18,7 @@ class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routeInformationParser: _router.routeInformationParser,
-      routerDelegate: _router.routerDelegate,
-    );
+    return MaterialApp.router(routerConfig: _router);
   }
 
   final _router = GoRouter(
@@ -28,6 +26,10 @@ class MyApp extends StatelessWidget {
       GoRoute(
         path: '/',
         builder: (context, state) => const HomePage(),
+      ),
+      GoRoute(
+        path: '/add_page',
+        builder: (context, state) => const AddPage(),
       ),
     ],
   );

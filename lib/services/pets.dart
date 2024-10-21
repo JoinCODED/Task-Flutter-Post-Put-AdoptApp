@@ -1,40 +1,38 @@
 import 'dart:async';
+
 import 'package:adopt_app/models/pet.dart';
 import "package:dio/dio.dart";
 
 class DioClient {
   final Dio _dio = Dio();
 
-  final _baseUrl = 'http://10.0.2.2:5000';
+  final _baseUrl = 'https://coded-pets-api-crud.eapi.joincoded.com';
 
   Future<List<Pet>> getPets() async {
     List<Pet> pets = [];
     try {
-      Response response = await _dio.get(_baseUrl + '/pets');
+      Response response = await _dio.get('$_baseUrl/pets');
       pets = (response.data as List).map((pet) => Pet.fromJson(pet)).toList();
-    } on DioError catch (error) {
+    } on DioException catch (error) {
       print(error);
     }
     return pets;
   }
 
   Future<Pet> createPet({required Pet pet}) async {
-    late Pet retrievedPet;
-    try {
-      FormData data = FormData.fromMap({
-        "name": pet.name,
-        "age": pet.age,
-        "gender": pet.gender,
-        "image": await MultipartFile.fromFile(
-          pet.image,
-        ),
-      });
-      Response response = await _dio.post(_baseUrl + '/pets', data: data);
-      retrievedPet = Pet.fromJson(response.data);
-    } on DioError catch (error) {
-      print(error);
-    }
-    return retrievedPet;
+    late Pet newPet;
+
+    var data = FormData.fromMap({
+      "name": pet.name,
+      "age": pet.age,
+      "gender": pet.gender,
+      "image": await MultipartFile.fromFile(pet.image),
+    });
+
+    var response = await _dio.post("$_baseUrl/pets", data: data);
+
+    newPet = Pet.fromJson(response.data);
+    return newPet;
   }
 
   Future<Pet> updatePet({required Pet pet}) async {
@@ -51,9 +49,9 @@ class DioClient {
       });
 
       Response response =
-          await _dio.put(_baseUrl + '/pets/${pet.id}', data: data);
+          await _dio.put('$_baseUrl/pets/${pet.id}', data: data);
       retrievedPet = Pet.fromJson(response.data);
-    } on DioError catch (error) {
+    } on DioException catch (error) {
       print(error);
     }
     return retrievedPet;
@@ -61,8 +59,8 @@ class DioClient {
 
   Future<void> deletePet({required int petId}) async {
     try {
-      await _dio.delete(_baseUrl + '/pets/${petId}');
-    } on DioError catch (error) {
+      await _dio.delete('$_baseUrl/pets/$petId');
+    } on DioException catch (error) {
       print(error);
     }
   }
@@ -70,9 +68,9 @@ class DioClient {
   Future<Pet> adoptPet({required int petId}) async {
     late Pet retrievedPet;
     try {
-      Response response = await _dio.post(_baseUrl + '/pets/adopt/${petId}');
+      Response response = await _dio.post('$_baseUrl/pets/adopt/$petId');
       retrievedPet = Pet.fromJson(response.data);
-    } on DioError catch (error) {
+    } on DioException catch (error) {
       print(error);
     }
     return retrievedPet;
